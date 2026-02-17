@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -8,10 +8,31 @@ import Resume from './pages/Resume';
 import Contact from './pages/Contact';
 import './index.css';
 
+// Component to handle dynamic page titles
+function PageTitleUpdater() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const titleMap = {
+      '/': 'Home',
+      '/about': 'About',
+      '/projects': 'Projects',
+      '/resume': 'Resume',
+      '/contact': 'Contact'
+    };
+
+    const pageName = titleMap[location.pathname] || 'Portfolio';
+    document.title = `Ketan Dabhi - ${pageName}`;
+  }, [location]);
+
+  return null;
+}
+
 function App() {
   return (
     <Router>
       <div className="App">
+        <PageTitleUpdater />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
